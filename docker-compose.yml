@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/home/app
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_HOST: db
+      DATABASE_NAME: hellodb
+      DATABASE_USER: webapp
+      DATABASE_PASSWORD: supersecret
+      DATABASE_PORT: 3306
+      REDIS_HOST: redis://redis:6379
+
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: "mysql -uroot -proot -e 'show databases;'"
+      interval: 3s
+      timeout: 10s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hellodb
+      MYSQL_USER: webapp
+      MYSQL_PASSWORD: supersecret
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
