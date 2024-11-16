@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image: jagretti/webapp:latest
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          env:
+            - name: DATABASE_HOST
+              value: db-host
+            - name: DATABASE_NAME
+              value: hellodb
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  key: webapp-secrets
+                  value: DATABASE_USER
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: webapp-secrets
+                  value: DATABASE_PASSWORD
+            - name: DATABASE_PORT
+              value: "3306"
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: webapp-secrets
+                  value: REDIS_HOST
