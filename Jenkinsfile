@@ -45,15 +45,23 @@ pipeline {
                     }
                 }
             }
+            post {
+                success {
+                    echo "Deployment to Kubernetes was successful"
+                }
+                failure {
+                    echo "Deployment failed"
+                }
+            }
         }
     }
     
     post {
         success {
-            echo "Deployment to Kubernetes was successful!"
+            echo "Build was succesful"
         }
         failure {
-            echo "Deployment failed!"
+            echo "Build failed"
         }
     }
 }
