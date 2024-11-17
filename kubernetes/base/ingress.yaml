@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: django-ingress
+spec:
+  ingressClassName: nginx # Assuming there's a class name with name `nginx`
+  tls:
+    - hosts:
+        - webapp.com
+      secretName: webapp-tls
+  rules:
+  - host: webapp.com
+    http:
+      paths:
+      - path: / 
+        pathType: Prefix
+        backend:
+          service:
+            name: webapp-service
+            port:
+              number: 80
