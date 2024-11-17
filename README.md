@@ -17,13 +17,13 @@ $ docker compose up
 
 ### Jenkins
 
-Simple pipeline to build, test, push, and deploy image to Kubernetes. I'm using Kustomize because it's a simple tool to modify small apps, but as soon as the resources are bigger or there are too many changes to do, usually I prefer Helm.
+Simple pipeline to build, test, push, and deploy image to Kubernetes. I'm using Kustomize because it's a simple tool to modify small apps, but as soon as the resources are bigger or there are too many changes to do, maybe Helm could be a good replacement.
 
 Some assumptions:
 * There's some kind of Ingress Controller installed in Kubernetes
 * Jenkins has kustomize/docker installed in their worked nodes
 
-## Diagram
+### Monitoring
 
 High-level diagram of a monitoring setup. Most of the tools provide a `/monitoring` Prometheus endpoint, that can
 be scraped and stored in Prometheus, to then visualize and alert using Grafana. Also there's a chance to push
@@ -48,3 +48,9 @@ graph LR
         G --> P
     end
 ```
+
+### Terraform
+
+There are two modules:
+* VPC: Creates a VPC with three public/private subnets, along with the corresponding NAT gateways and EIPs.
+* EKS cluster: Create a simple EKS cluster, with one AWS managed nodegroup, and its corresponding security group.
