@@ -40,7 +40,7 @@ pipeline {
                 script {
                     // Assuming we just want to deploy to production
                     if (env.BRANCH_NAME == "main") {
-                        sh "cd kubernetes/base && kustomize edit set image jagretti/webapp:${BUILD_ID}"
+                        sh "cd kubernetes/base && kustomize edit set image ${DOCKER_IMAGE}:${BUILD_ID}"
                         sh "kubectl apply -k kubernetes/overlays/production -n $K8S_NAMESPACE"
                     }
                 }

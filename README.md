@@ -7,7 +7,7 @@ Small app written in Python, using Django framework. I had some knowledge about 
 It connects to a MySQL database, and a Redis instance.
 
 ### Docker
-Using minimal Python Alpine image, but the Django framework is not lightweight, so the image has around ~200MB, but it's fast and easy to build.
+Using minimal Python Alpine image, but the Django framework is not lightweight, so the image has around ~200MB, but it's fast and easy to build. `docker-compose.yml` is the main compose file, and in `docker-compose.ci.yml` I'm just overwriting the `image` field to use the environment variables that are available in the Jenkins pipeline.
 
 Commands:
 ```
@@ -27,7 +27,7 @@ Some assumptions:
 
 High-level diagram of a monitoring setup. Most of the tools provide a `/monitoring` Prometheus endpoint, that can
 be scraped and stored in Prometheus, to then visualize and alert using Grafana. Also there's a chance to push
-metrics to Prometheus from the application itself.
+metrics to Prometheus from the application itself. If we want to use something like an APM tool, usually it involves adding a command to the startup process (the webserver in this case), and this can be done in the `Deployment` resource.
 
 ```mermaid
 graph LR
@@ -54,3 +54,5 @@ graph LR
 There are two modules:
 * VPC: Creates a VPC with three public/private subnets, along with the corresponding NAT gateways and EIPs.
 * EKS cluster: Create a simple EKS cluster, with one AWS managed nodegroup, and its corresponding security group.
+
+I used these modules to create both the VPC and EKS cluster, is a good practice to use modules so the TF code is easily reusable.

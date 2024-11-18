@@ -34,17 +34,17 @@ spec:
             - name: DATABASE_USER
               valueFrom:
                 secretKeyRef:
-                  key: webapp-secrets
-                  value: DATABASE_USER
+                  name: webapp-secrets
+                  key: DATABASE_USER
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: webapp-secrets
-                  value: DATABASE_PASSWORD
+                  name: webapp-secrets
+                  key: DATABASE_PASSWORD
             - name: DATABASE_PORT
               value: "3306"
             - name: REDIS_HOST
               valueFrom:
                 secretKeyRef:
-                  key: webapp-secrets
-                  value: REDIS_HOST
+                  name: webapp-secrets
+                  key: REDIS_HOST
