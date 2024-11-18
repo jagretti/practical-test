@@ -41,11 +41,14 @@ graph LR
     subgraph Monitoring
         P[Prometheus]
         G[Grafana]
+        APM[APM]
         P --scrapes--> LB
         P --scrapes--> R
         P --scrapes--> DB
+        WA -- pushes --> APM
         WA -- pushes --> P
         G --> P
+        G --> APM
     end
 ```
 
